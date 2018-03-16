@@ -1,5 +1,6 @@
 package flocking
 
+import cats.kernel.Monoid
 import math.Vector2
 import org.scalajs.dom
 import org.scalajs.dom.html.Canvas
@@ -110,11 +111,11 @@ object FlockingRules {
     nearby.size match {
       case 0 => entity.velocity
       case _ =>
-        val (xAlign, yAlign) = nearby.foldLeft((0.0, 0.0)) { (acc, value) =>
-          (acc._1 + value.velocity.x, acc._2 + value.velocity.y)
-        } //todo combine
-
-        val (xAlignAvg, yAlignAvg) = (xAlign / nearby.size, yAlign / nearby.size)
+//        val (xAlign, yAlign) = nearby.foldLeft((0.0, 0.0)) { (acc, value) =>
+//          (acc._1 + value.velocity.x, acc._2 + value.velocity.y)
+//        }
+        val alignment = Monoid[Vector2].combineAll(nearby.map(_.velocity))
+        val (xAlignAvg, yAlignAvg) = (alignment.x / nearby.size, alignment.y / nearby.size)
 
         Vector2(xAlignAvg, yAlignAvg).normalized
     }
