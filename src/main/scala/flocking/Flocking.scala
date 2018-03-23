@@ -1,6 +1,6 @@
 package flocking
 
-import cats.kernel.Monoid
+import cats.Monoid
 import math.Vector2
 import org.scalajs.dom
 import org.scalajs.dom.html.Canvas
